@@ -11,9 +11,9 @@ namespace SupplierHub.Models
 		public string? Scope { get; set; }
 		[Column(TypeName ="nvarchar(max)")]
 		public string? ExpressionJSON { get; set; }
-		[Column(TypeName ="nvarchar(20")]
+		[Column(TypeName ="nvarchar(20)")]
 		public string? Severity { get; set; }
 
-		public bool? Status { get; set; }
+		public bool? Status { get; set; } = false;
 	}
 }
