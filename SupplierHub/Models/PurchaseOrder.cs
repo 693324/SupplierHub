@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SupplierHub.Constants.Enum;
 using SupplierHub.Constants.Enums; // Add this using statement!
 
 namespace SupplierHub.Models
@@ -24,20 +25,19 @@ namespace SupplierHub.Models
 
         [Column("currency")]
         [StringLength(10)]
-        public string Currency { get; set; }
+        public string ? Currency { get; set; }
 
         [Column("incoterms")]
         [StringLength(50)]
-        public string Incoterms { get; set; }
+        public string ? Incoterms { get; set; }
 
         [Column("payment_terms")]
         [StringLength(100)]
-        public string PaymentTerms { get; set; }
-
+        public string ? PaymentTerms { get; set; }
         [Required]
         [Column("status")]
         [StringLength(50)]
-        public string Status { get; set; } = PurchaseOrderStatus.OPEN.ToString();
+        public PurchaseOrderStatus Status { get; set; } = PurchaseOrderStatus.OPEN;
 
         [Column("createdon")]
         public DateTime CreatedOn { get; set; } = DateTime.Now;
