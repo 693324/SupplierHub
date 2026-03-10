@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using SupplierHub.Constants; // Import your enum namespace
-
+//....
 namespace SupplierHub.Models
 {
 	public class Requisition
