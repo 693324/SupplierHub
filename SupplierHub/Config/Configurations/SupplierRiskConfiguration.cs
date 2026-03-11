@@ -9,8 +9,10 @@ namespace SupplierHub.Config.Configurations
 		public void Configure(EntityTypeBuilder<SupplierRisk> builder)
 		{
 			builder.ToTable("supplier_risk");
+        NEW: IsDeleted default
+builder.Property(x => x.IsDeleted).IsRequired().HasDefaultValue(false);
 
-			builder.Property(x => x.RiskType).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.RiskType).IsRequired().HasMaxLength(50);
 			builder.Property(x => x.Score).HasColumnType("decimal(5,2)");
 			builder.Property(x => x.Notes).HasMaxLength(500);
 
@@ -38,6 +40,7 @@ namespace SupplierHub.Config.Configurations
 			builder.HasIndex(x => x.AssessedDate).HasDatabaseName("idx_risk_assessed");
 			builder.HasIndex(x => x.Status).HasDatabaseName("idx_risk_status");
 			builder.HasIndex(x => x.UpdatedOn).HasDatabaseName("idx_risk_updatedon");
-		}
+            builder.HasIndex(x => x.IsDeleted).HasDatabaseName("idx_contract_isdeleted");
+        }
 	}
 }
