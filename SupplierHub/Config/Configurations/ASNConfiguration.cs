@@ -31,6 +31,7 @@ namespace SupplierHub.Config.Configurations
 				   .WithMany(x => x.ASNs)
 				   .HasForeignKey(x => x.ShipmentID)
 				   .OnDelete(DeleteBehavior.Cascade);
+			builder.Property(x => x.IsDeleted).IsRequired().HasDefaultValue(false);
 
 			// Indexes
 			builder.HasIndex(x => x.ShipmentID)
@@ -44,6 +45,7 @@ namespace SupplierHub.Config.Configurations
 
 			builder.HasIndex(x => x.CreatedDate)
 				   .HasDatabaseName("idx_asn_createddate");
+			builder.HasIndex(x => x.IsDeleted).HasDatabaseName("idx_contract_isdeleted");
 		}
 	}
 }

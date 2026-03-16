@@ -54,6 +54,7 @@ namespace SupplierHub.Config.Configurations
 				   .WithMany()
 				   .HasForeignKey(x => x.SupplierPreferredID)
 				   .OnDelete(DeleteBehavior.SetNull);
+			builder.Property(x => x.IsDeleted).IsRequired().HasDefaultValue(false);
 
 			// Indexes
 			builder.HasIndex(x => x.PRID)
@@ -64,6 +65,9 @@ namespace SupplierHub.Config.Configurations
 
 			builder.HasIndex(x => x.SupplierPreferredID)
 				   .HasDatabaseName("idx_prline_supplierid");
+			builder.HasIndex(x => x.IsDeleted).HasDatabaseName("idx_contract_isdeleted");
+
+
 		}
 	}
 }

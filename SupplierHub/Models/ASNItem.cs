@@ -25,6 +25,7 @@ namespace SupplierHub.Models
 
 		[StringLength(500)]
 		public string Notes { get; set; }
+		public bool IsDeleted { get; set; }  // default -> false
 
 		// Navigation Properties
 		public virtual ASN ASN { get; set; }

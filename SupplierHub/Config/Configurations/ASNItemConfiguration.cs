@@ -40,6 +40,7 @@ namespace SupplierHub.Config.Configurations
 				   .WithMany()
 				   .HasForeignKey(x => x.POLineID)
 				   .OnDelete(DeleteBehavior.Restrict);
+			builder.Property(x => x.IsDeleted).IsRequired().HasDefaultValue(false);
 
 			// Indexes
 			builder.HasIndex(x => x.ASNID)
@@ -47,6 +48,7 @@ namespace SupplierHub.Config.Configurations
 
 			builder.HasIndex(x => x.POLineID)
 				   .HasDatabaseName("idx_asnitem_polineid");
+			builder.HasIndex(x => x.IsDeleted).HasDatabaseName("idx_contract_isdeleted");
 		}
 	}
 }

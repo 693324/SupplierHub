@@ -23,6 +23,7 @@ namespace SupplierHub.Models
 
 		[StringLength(500)]
 		public string Remarks { get; set; }
+		public bool IsDeleted { get; set; }  // default -> false
 
 		// Navigation Properties
 		public virtual Requisition Requisition { get; set; }

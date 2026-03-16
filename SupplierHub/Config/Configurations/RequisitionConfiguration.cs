@@ -19,12 +19,14 @@ namespace SupplierHub.Config.Configurations
 			builder.Property(x => x.Status).IsRequired()
 				   .HasConversion<string>().HasMaxLength(20)
 				   .HasDefaultValue("Draft");
+			builder.Property(x => x.IsDeleted).IsRequired().HasDefaultValue(false);
 
 			// Indexes
 			builder.HasIndex(x => x.RequesterID).HasDatabaseName("idx_req_requester");
 			builder.HasIndex(x => x.OrgID).HasDatabaseName("idx_req_org");
 			builder.HasIndex(x => x.Status).HasDatabaseName("idx_req_status");
 			builder.HasIndex(x => x.RequestedDate).HasDatabaseName("idx_req_requesteddate");
+			builder.HasIndex(x => x.IsDeleted).HasDatabaseName("idx_contract_isdeleted");
 		}
 	}
 }

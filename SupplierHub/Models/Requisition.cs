@@ -30,6 +30,8 @@ namespace SupplierHub.Models
 		[Required]
 		public RequisitionStatus Status { get; set; }
 
+		public bool IsDeleted { get; set; }  // default -> false
+
 		// Navigation Properties
 		public virtual User Requester { get; set; }
 

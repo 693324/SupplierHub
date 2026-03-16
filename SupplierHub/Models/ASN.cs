@@ -22,6 +22,7 @@ namespace SupplierHub.Models
 		[Required]
 		[StringLength(20)]
 		public string Status { get; set; }
+		public bool IsDeleted { get; set; }  // default -> false
 
 		// Navigation Properties
 		public virtual Shipment Shipment { get; set; }
