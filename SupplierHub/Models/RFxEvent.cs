@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using SupplierHub.Constants.Enum;
-using SupplierHub.Models;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SupplierHub.Models
 {
-	public class RFxEvent
+	public class RfxEvent
 	{
 		[Key]
+<<<<<<< HEAD
 		public int rfx_id { get; set; }
 
 		[Required]
@@ -47,5 +46,34 @@ namespace SupplierHub.Models
 		public virtual ICollection<Bid> Bids { get; set; }
 
 
+=======
+		public long RfxID { get; set; }
+
+		[Required, MaxLength(10)]
+		public required string Type { get; set; }
+
+		[Required, MaxLength(200)]
+		public required string Title { get; set; }
+
+		public long? CategoryID { get; set; }
+
+		public long? CreatedBy { get; set; }
+
+		public DateTime? OpenDate { get; set; }
+
+		public DateTime? CloseDate { get; set; }
+
+		[Required, MaxLength(30)]
+		public required string Status { get; set; }
+
+		[Required]
+		public DateTime CreatedOn { get; set; }
+
+		[Required]
+		public DateTime UpdatedOn { get; set; }
+
+		[Required]
+		public bool IsDeleted { get; set; }
+>>>>>>> f5b24b19b20cc4f606a8ea7902667aadcbaffb0f
 	}
 }

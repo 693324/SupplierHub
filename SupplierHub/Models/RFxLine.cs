@@ -1,12 +1,12 @@
-﻿using SupplierHub.Constants.Enum;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SupplierHub.Models
 {
-	public class RFxLine
+	public class RfxLine
 	{
 		[Key]
+<<<<<<< HEAD
 		public int rfx_line_id { get; set; }
 
 		[Required]
@@ -30,10 +30,35 @@ namespace SupplierHub.Models
 		public decimal? target_price { get; set; }
 
 		public string notes { get; set; }
+=======
+		public long RfxLineID { get; set; }
 
-		public bool IsDeleted { get; set; } = false;
+		[Required]
+		public long RfxID { get; set; }
 
-		public ICollection<BidLine> BidLines { get; set; }
+		public long? ItemID { get; set; }
 
+		public decimal? Qty { get; set; }
+
+		[MaxLength(30)]
+		public string? Uom { get; set; }
+
+		public decimal? TargetPrice { get; set; }
+
+		[MaxLength(500)]
+		public string? Notes { get; set; }
+>>>>>>> f5b24b19b20cc4f606a8ea7902667aadcbaffb0f
+
+		[Required, MaxLength(30)]
+		public required string Status { get; set; }
+
+		[Required]
+		public DateTime CreatedOn { get; set; }
+
+		[Required]
+		public bool IsDeleted { get; set; }
+
+		[Required]
+		public DateTime UpdatedOn { get; set; }
 	}
 }
