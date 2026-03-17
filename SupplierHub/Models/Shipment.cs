@@ -26,6 +26,7 @@ namespace SupplierHub.Models
 		public required string Status { get; set; }
 
 		[Required]
+
 		public DateTime CreatedOn { get; set; }
 
 		[Required]
