@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SupplierHub.DTO.UserDTO
+namespace SupplierHub.DTOs.UserDTO
 {
 	/// <summary>
 	/// Request model for updating an existing user.

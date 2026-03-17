@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SupplierHub.DTO.UserDTO
+namespace SupplierHub.DTOs.UserDTO
 {
 	/// <summary>
 	/// Read model for user details (safe for responses).
