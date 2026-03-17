@@ -26,6 +26,9 @@ using SupplierHub.DTOs.InvoiceLineDTO;
 using SupplierHub.DTOs.MatchRefDTO;
 
 
+using SupplierHub.DTOs.GrnRefDTO;
+using SupplierHub.Models;
+
 namespace SupplierHub.MapProfile
 {
 	// This is the Mapping profile for AutoMapper to map our DTOs
@@ -65,11 +68,15 @@ namespace SupplierHub.MapProfile
             CreateMap<Inspection, InspectionUpdateDto>().ReverseMap();
 
             //GRNRef
+
             CreateMap<GrnRef, GrnCreateDto>().ReverseMap();
             CreateMap<GrnRef, GrnReadDto>().ReverseMap();
             CreateMap<GrnRef, GrnStatusUpdateDto>().ReverseMap();
             CreateMap<GrnRef, GrnUpdateDto>().ReverseMap();
 
+
+            
+        
 			CreateMap<RfxEvent, RFxEventCreateDto>().ReverseMap();
 			CreateMap<RfxEvent, RFxEventReadDto>().ReverseMap();
 			CreateMap<RfxEvent, RFxEventUpdateDto>().ReverseMap();
@@ -97,6 +104,7 @@ namespace SupplierHub.MapProfile
 			CreateMap<RfxInvite, RfxInviteCreateDto>().ReverseMap();
 			CreateMap<RfxInvite, RfxInviteReadDto>().ReverseMap();
 			CreateMap<RfxInvite, RfxInviteUpdateDto>().ReverseMap();
+
 
 			// PurchaseOrder mappings
 			CreateMap<PurchaseOrder, PurchaseOrderCreateDto>().ReverseMap();
@@ -137,6 +145,7 @@ namespace SupplierHub.MapProfile
 			CreateMap<MatchRef, MatchRefCreateDto>().ReverseMap();
 			CreateMap<MatchRef, MatchRefUpdateDto>().ReverseMap();
 			CreateMap<MatchRef, MatchRefResponseDto>().ReverseMap();
+
 		}
 	}
 }
