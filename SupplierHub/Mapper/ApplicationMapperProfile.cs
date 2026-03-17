@@ -12,7 +12,21 @@ using SupplierHub.DTOs.SupplierContactDTO;
 using SupplierHub.DTOs.SupplierDTO;
 using SupplierHub.DTOs.SupplierRiskDTO;
 using SupplierHub.DTOs.InspectionDTO;
-using SupplierHub.DTOs.GRNRefDTO;
+using SupplierHub.DTOs.GrnRefDTO;
+using SupplierHub.Models;
+
+//Neeraj DTOs
+using SupplierHub.DTOs.PurchaseOrderDTO;
+using SupplierHub.DTOs.POLineDTO;
+using SupplierHub.DTOs.PoAckDTO;
+using SupplierHub.DTOs.PoRevisionDTO;
+using SupplierHub.DTOs.ErpExportRefDTO;
+using SupplierHub.DTOs.InvoiceDTO;
+using SupplierHub.DTOs.InvoiceLineDTO;
+using SupplierHub.DTOs.MatchRefDTO;
+
+
+using SupplierHub.DTOs.GrnRefDTO;
 using SupplierHub.Models;
 
 namespace SupplierHub.MapProfile
@@ -54,11 +68,15 @@ namespace SupplierHub.MapProfile
             CreateMap<Inspection, InspectionUpdateDto>().ReverseMap();
 
             //GRNRef
-            CreateMap<GRNRef, GRNCreateDto>().ReverseMap();
-            CreateMap<GRNRef, GRNReadDto>().ReverseMap();
-            CreateMap<GRNRef, GRNStatusUpdateDto>().ReverseMap();
-            CreateMap<GRNRef, GRNUpdateDto>().ReverseMap();
-        }
+
+            CreateMap<GrnRef, GrnCreateDto>().ReverseMap();
+            CreateMap<GrnRef, GrnReadDto>().ReverseMap();
+            CreateMap<GrnRef, GrnStatusUpdateDto>().ReverseMap();
+            CreateMap<GrnRef, GrnUpdateDto>().ReverseMap();
+
+
+            
+        
 			CreateMap<RfxEvent, RFxEventCreateDto>().ReverseMap();
 			CreateMap<RfxEvent, RFxEventReadDto>().ReverseMap();
 			CreateMap<RfxEvent, RFxEventUpdateDto>().ReverseMap();
@@ -86,6 +104,48 @@ namespace SupplierHub.MapProfile
 			CreateMap<RfxInvite, RfxInviteCreateDto>().ReverseMap();
 			CreateMap<RfxInvite, RfxInviteReadDto>().ReverseMap();
 			CreateMap<RfxInvite, RfxInviteUpdateDto>().ReverseMap();
+
+
+			// PurchaseOrder mappings
+			CreateMap<PurchaseOrder, PurchaseOrderCreateDto>().ReverseMap();
+			CreateMap<PurchaseOrder, PurchaseOrderUpdateDto>().ReverseMap();
+			CreateMap<PurchaseOrder, PurchaseOrderResponseDto>().ReverseMap();
+
+			// POLine mappings
+			CreateMap<POLine, POLineCreateDto>().ReverseMap();
+			CreateMap<POLine, POLineUpdateDto>().ReverseMap();
+			CreateMap<POLine, POLineResponseDto>().ReverseMap();
+
+			//PoAck mappings
+			CreateMap<PoAck, PoAckCreateDto>().ReverseMap();
+			CreateMap<PoAck, PoAckUpdateDto>().ReverseMap();
+			CreateMap<PoAck, PoAckResponseDto>().ReverseMap();
+
+			//PoRevsion mappings
+			CreateMap<PoRevision, PoRevisionCreateDto>().ReverseMap();
+			CreateMap<PoRevision, PoRevisionUpdateDto>().ReverseMap();
+			CreateMap<PoRevision, PoRevisionResponseDto>().ReverseMap();
+
+			//ErpExportRef mappings
+			CreateMap<ErpExportRef, ErpExportRefCreateDto>().ReverseMap();
+			CreateMap<ErpExportRef, ErpExportRefUpdateDto>().ReverseMap();
+			CreateMap<ErpExportRef, ErpExportRefResponseDto>().ReverseMap();
+
+			//Invoice mappings
+			CreateMap<Invoice, InvoiceCreateDto>().ReverseMap();
+			CreateMap<Invoice, InvoiceUpdateDto>().ReverseMap();
+			CreateMap<Invoice, InvoiceResponseDto>().ReverseMap();
+
+			//InvoiceLine mappings
+			CreateMap<InvoiceLine, InvoiceLineCreateDto>().ReverseMap();
+			CreateMap<InvoiceLine, InvoiceLineUpdateDto>().ReverseMap();
+			CreateMap<InvoiceLine, InvoiceLineResponseDto>().ReverseMap();
+
+			//MatchRef mappings
+			CreateMap<MatchRef, MatchRefCreateDto>().ReverseMap();
+			CreateMap<MatchRef, MatchRefUpdateDto>().ReverseMap();
+			CreateMap<MatchRef, MatchRefResponseDto>().ReverseMap();
+
 		}
 	}
 }
