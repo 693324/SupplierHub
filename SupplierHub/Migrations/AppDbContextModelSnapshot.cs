@@ -822,7 +822,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("QUEUED");
+                        .HasDefaultValue("Queued");
 
                     b.Property<DateTime>("UpdatedOn")
                         .ValueGeneratedOnAddOrUpdate()
@@ -1475,7 +1475,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("ACTIVE");
+                        .HasDefaultValue("Active");
 
                     b.Property<long>("SupplierID")
                         .HasColumnType("bigint");
@@ -1538,7 +1538,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("ACTIVE");
+                        .HasDefaultValue("Active");
 
                     b.Property<decimal?>("UnitPrice")
                         .HasPrecision(18, 4)
@@ -1600,7 +1600,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("ACTIVE");
+                        .HasDefaultValue("Active");
 
                     b.Property<DateTime>("UpdatedOn")
                         .ValueGeneratedOnAddOrUpdate()
@@ -1731,7 +1731,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("OPEN");
+                        .HasDefaultValue("Open");
 
                     b.Property<long>("SupplierID")
                         .HasColumnType("bigint");

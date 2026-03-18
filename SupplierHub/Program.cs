@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SupplierHub;
 using SupplierHub.MapProfile;
-
-
+using AutoMapper;
 
 using SupplierHub.Repositories;
 using SupplierHub.Repositories.Interface;
@@ -20,6 +19,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     if (builder.Environment.IsDevelopment())
         options.EnableSensitiveDataLogging();
 });
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AppDb")));
+builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+
+//ErpExportRef
+builder.Services.AddScoped<IErpExportRefRepository, ErpExportRefRepository>();
+builder.Services.AddScoped<IErpExportRefService, ErpExportRefService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -37,13 +43,19 @@ builder.Services.AddAutoMapper(typeof(ApplicationMapperProfile).Assembly);
 builder.Services.AddScoped<ISuppliersRepository, SuppliersRepository>();
 builder.Services.AddScoped<ISuppliersService, SuppliersService>();
 
+
 // Module 1: Requisition (Procurement)
 builder.Services.AddScoped<IRequisitionRepository, RequisitionRepository>();
 builder.Services.AddScoped<IRequisitionService, RequisitionService>();
 
+builder.Services.AddScoped<IRfxRepository, RfxRepository>();
+builder.Services.AddScoped<IRfxService, RfxService>();
+
+
 // Module 2: Shipping (Logistics)
 builder.Services.AddScoped<IShippingRepository, ShippingRepository>();
 builder.Services.AddScoped<IShippingService, ShippingService>();
+
 
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -51,6 +63,26 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 // User repository & service
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Role repository & service
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+
+// Permission repository & service
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+
+// RolePermission repository & service
+builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
+
+// UserRole repository & service
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+
+// AuditLog repository & service
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 
 
 

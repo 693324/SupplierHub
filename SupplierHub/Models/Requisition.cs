@@ -13,7 +13,7 @@ namespace SupplierHub.Models
 		public long RequesterID { get; set; }
 
 		[Required]
-		public long RequesterUserID { get; set; } // Foreign Key column from your screenshot
+		public long RequesterUserID { get; set; } 
 
 		[Required]
 		public long OrgID { get; set; }
@@ -29,7 +29,7 @@ namespace SupplierHub.Models
 		public DateTime? NeededByDate { get; set; }
 
 		[Required, MaxLength(30)]
-		public string Status { get; set; } = "PENDING";
+		public required string Status { get; set; }
 
 		[Required]
 		public DateTime CreatedOn { get; set; }
