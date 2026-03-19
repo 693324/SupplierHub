@@ -35,10 +35,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(typeof(ApplicationMapperProfile).Assembly);
 
 
-
-
-
-
 // register services before Build
 builder.Services.AddScoped<ISuppliersRepository, SuppliersRepository>();
 builder.Services.AddScoped<ISuppliersService, SuppliersService>();
@@ -84,10 +80,6 @@ builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -95,8 +87,6 @@ if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
 }
-
-
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
