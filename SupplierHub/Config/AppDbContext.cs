@@ -55,14 +55,18 @@ namespace SupplierHub
 
 		// Requisitions & Approvals
 		public DbSet<Requisition> Requisitions { get; set; }
-		public DbSet<PrLine> PRLines { get; set; }
+		public DbSet<PrLine> PRLines { get; set; } // Note the name here
 		public DbSet<ApprovalStep> ApprovalSteps { get; set; }
 
 		
 
 		// Purchase Orders, Acknowledgement, Revision, ERP Export
 		public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-		public DbSet<SupplierHub.Models.PoLine> PLines { get; set; }
+
+		public DbSet<PoLine> PLines { get; set; }
+
+		public DbSet<PoLine> PoLines { get; set; }
+
 		public DbSet<PoAck> PoAcks { get; set; }
 		public DbSet<PoRevision> PoRevisions { get; set; }
 		public DbSet<ErpExportRef> ErpExportRefs { get; set; }
