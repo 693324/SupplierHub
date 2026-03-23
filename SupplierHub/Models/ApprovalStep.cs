@@ -23,7 +23,6 @@ namespace SupplierHub.Models
 		[MaxLength(500)]
 		public string? Remarks { get; set; }
 
-
 		[Required, MaxLength(30)]
 		public required string Status { get; set; }
 

@@ -33,7 +33,6 @@ namespace SupplierHub.Models
 		[Required]
 		public DateTime CreatedOn { get; set; }
 
-
 		[Required]
 		public DateTime UpdatedOn { get; set; }
 
