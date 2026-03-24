@@ -41,6 +41,8 @@ using SupplierHub.DTOs.SupplierKpiDTO;
 using SupplierHub.DTOs.SupplierRiskDTO;
 using SupplierHub.DTOs.UserDTO;
 using SupplierHub.DTOs.UserRoleDTO;
+using SupplierHub.DTOs.ApprovalRuleDTO;
+using SupplierHub.DTOs.SystemConfigDTO;
 using SupplierHub.Models;
 
 
@@ -146,6 +148,16 @@ namespace SupplierHub.MapProfile
 			CreateMap<Models.RolePermission, UpdateRolePermissionDto>().ReverseMap();
 			CreateMap<Models.RolePermission, RolePermissionDto>().ReverseMap();
 			CreateMap<Models.RolePermission, RolePermissionListItemDto>().ReverseMap();
+
+			// SystemConfig mappings
+			CreateMap<SystemConfig, SystemConfigCreateDto>().ReverseMap();
+			CreateMap<SystemConfig, SystemConfigReadDto>().ReverseMap();
+			CreateMap<SystemConfig, SystemConfigUpdateDto>().ReverseMap();
+
+			// ApprovalRule mappings
+			CreateMap<ApprovalRule, ApprovalRuleCreateDto>().ReverseMap();
+			CreateMap<ApprovalRule, ApprovalRuleReadDto>().ReverseMap();
+			CreateMap<ApprovalRule, ApprovalRuleUpdateDto>().ReverseMap();
 
 			// UserRole mappings
 			CreateMap<Models.UserRole, CreateUserRoleDto>().ReverseMap();
