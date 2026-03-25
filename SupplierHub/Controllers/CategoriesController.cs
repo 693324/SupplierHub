@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using SupplierHub.Services.Interface;
 using SupplierHub.DTOs.CategoryDTO;
-using SupplierHub.DTOs.ItemDTO;
+using Microsoft.AspNetCore.Authorization;
+using SupplierHub.Constants;
 
 namespace SupplierHub.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles =
+		nameof(RoleType.Admin) + "," +
+		nameof(RoleType.CategoryManager))]
 	public class CategoriesController : ControllerBase
 	{
 		private readonly ICategoryService _service;
@@ -25,12 +29,13 @@ namespace SupplierHub.Controllers
 		/// Create category
 		/// </summary>
 		[HttpPost]
-		[ProducesResponseType(typeof(ItemGetByIdDto), StatusCodes.Status200OK)]
+		[Authorize(Roles = nameof(RoleType.Admin) + "," + nameof(RoleType.CategoryManager))]
+		[ProducesResponseType(typeof(CategoryGetByIdDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public async Task<IActionResult> Create(
-			[FromBody] ItemCreateDto dto,
+			[FromBody] CategoryCreateDto dto,
 			CancellationToken ct)
 		{
 			try
@@ -56,7 +61,12 @@ namespace SupplierHub.Controllers
 		/// Get category by ID
 		/// </summary>
 		[HttpGet("{categoryId:long}")]
-		[ProducesResponseType(typeof(ItemGetByIdDto), StatusCodes.Status200OK)]
+		[Authorize(Roles =
+			nameof(RoleType.Admin) + "," +
+			nameof(RoleType.CategoryManager) + "," +
+			nameof(RoleType.Buyer) + "," +
+			nameof(RoleType.SupplierUser))]
+		[ProducesResponseType(typeof(CategoryGetByIdDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetById(long categoryId, CancellationToken ct)
 		{
@@ -82,7 +92,12 @@ namespace SupplierHub.Controllers
 		/// Get all categories
 		/// </summary>
 		[HttpGet]
-		[ProducesResponseType(typeof(IEnumerable<ItemGetAllDto>), StatusCodes.Status200OK)]
+		[Authorize(Roles =
+			nameof(RoleType.Admin) + "," +
+			nameof(RoleType.CategoryManager) + "," +
+			nameof(RoleType.Buyer) + "," +
+			nameof(RoleType.SupplierUser))]
+		[ProducesResponseType(typeof(IEnumerable<CategoryGetAllDto>), StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetAll(CancellationToken ct)
 		{
 			try
@@ -104,11 +119,12 @@ namespace SupplierHub.Controllers
 		/// Update category
 		/// </summary>
 		[HttpPut("{categoryId:long}")]
-		[ProducesResponseType(typeof(ItemGetByIdDto), StatusCodes.Status200OK)]
+		[Authorize(Roles = nameof(RoleType.Admin) + "," + nameof(RoleType.CategoryManager))]
+		[ProducesResponseType(typeof(CategoryGetByIdDto), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> Update(
 			long categoryId,
-			[FromBody] ItemUpdateDto dto,
+			[FromBody] CategoryUpdateDto dto,
 			CancellationToken ct)
 		{
 			try
@@ -136,9 +152,10 @@ namespace SupplierHub.Controllers
 		/// Soft delete category
 		/// </summary>
 		[HttpDelete]
+		[Authorize(Roles = nameof(RoleType.Admin))]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> Delete(
-			[FromBody] ItemDeleteDto dto,
+			[FromBody] CategoryDeleteDto dto,
 			CancellationToken ct)
 		{
 			try

@@ -822,7 +822,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("Queued");
+                        .HasDefaultValue("QUEUED");
 
                     b.Property<DateTime>("UpdatedOn")
                         .ValueGeneratedOnAddOrUpdate()
@@ -1393,74 +1393,6 @@ namespace SupplierHub.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("SupplierHub.Models.POLine", b =>
-                {
-                    b.Property<long>("PoLineID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PoLineID"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<DateTime?>("DeliveryDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<long?>("ItemID")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal?>("LineTotal")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<long>("PoID")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal?>("Qty")
-                        .HasPrecision(18, 3)
-                        .HasColumnType("decimal(18,3)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("ACTIVE");
-
-                    b.Property<decimal?>("UnitPrice")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("Uom")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<DateTime>("UpdatedOn")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("PoLineID");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasIndex("PoID");
-
-                    b.ToTable("PLines");
-                });
-
             modelBuilder.Entity("SupplierHub.Models.Permission", b =>
                 {
                     b.Property<long>("PermissionID")
@@ -1543,7 +1475,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("Active");
+                        .HasDefaultValue("ACTIVE");
 
                     b.Property<long>("SupplierID")
                         .HasColumnType("bigint");
@@ -1627,7 +1559,7 @@ namespace SupplierHub.Migrations
 
                     b.HasIndex("PoID");
 
-                    b.ToTable("PLines");
+                    b.ToTable("PoLine");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.PoRevision", b =>
@@ -1668,7 +1600,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
-                        .HasDefaultValue("Active");
+                        .HasDefaultValue("ACTIVE");
 
                     b.Property<DateTime>("UpdatedOn")
                         .ValueGeneratedOnAddOrUpdate()
@@ -1799,7 +1731,7 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("Open");
+                        .HasDefaultValue("OPEN");
 
                     b.Property<long>("SupplierID")
                         .HasColumnType("bigint");
@@ -2590,6 +2522,10 @@ namespace SupplierHub.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.PrimitiveCollection<string>("UserRoles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserID");
 
                     b.HasIndex("OrgID");
@@ -2599,10 +2535,8 @@ namespace SupplierHub.Migrations
 
             modelBuilder.Entity("SupplierHub.Models.UserRole", b =>
                 {
-                    b.Property<long>("UserID")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("RoleID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedOn")
@@ -2627,11 +2561,15 @@ namespace SupplierHub.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("UserID", "RoleID");
+                    b.Property<long>("UserID")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("RoleID");
+                    b.HasKey("RoleID");
 
-                    b.ToTable("Userroles");
+                    b.HasIndex("UserID", "RoleID")
+                        .IsUnique();
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.ApprovalStep", b =>
@@ -2666,7 +2604,7 @@ namespace SupplierHub.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SupplierHub.Models.POLine", null)
+                    b.HasOne("SupplierHub.Models.PoLine", null)
                         .WithMany()
                         .HasForeignKey("PoLineID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2789,7 +2727,7 @@ namespace SupplierHub.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SupplierHub.Models.POLine", null)
+                    b.HasOne("SupplierHub.Models.PoLine", null)
                         .WithMany()
                         .HasForeignKey("PoLineID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2851,7 +2789,7 @@ namespace SupplierHub.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SupplierHub.Models.POLine", null)
+                    b.HasOne("SupplierHub.Models.PoLine", null)
                         .WithMany()
                         .HasForeignKey("PoLineID")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -2903,20 +2841,6 @@ namespace SupplierHub.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SupplierHub.Models.POLine", b =>
-                {
-                    b.HasOne("SupplierHub.Models.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ItemID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SupplierHub.Models.PurchaseOrder", null)
-                        .WithMany()
-                        .HasForeignKey("PoID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SupplierHub.Models.PoAck", b =>
                 {
                     b.HasOne("SupplierHub.Models.PurchaseOrder", null)
@@ -2928,6 +2852,20 @@ namespace SupplierHub.Migrations
                     b.HasOne("SupplierHub.Models.Supplier", null)
                         .WithMany()
                         .HasForeignKey("SupplierID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SupplierHub.Models.PoLine", b =>
+                {
+                    b.HasOne("SupplierHub.Models.Item", null)
+                        .WithMany()
+                        .HasForeignKey("ItemID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SupplierHub.Models.PurchaseOrder", null)
+                        .WithMany()
+                        .HasForeignKey("PoID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -1,10 +1,15 @@
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json.Serialization;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SupplierHub;
 using SupplierHub.MapProfile;
-using AutoMapper;
-
-
-
+using SupplierHub.Middleware;
+using SupplierHub.Models;
 using SupplierHub.Repositories;
 using SupplierHub.Repositories.Interface;
 using SupplierHub.Services;
@@ -46,6 +51,10 @@ builder.Services.AddScoped<ISupplierRiskService, SupplierRiskService>();
 // SUPPLIER CONTACT
 builder.Services.AddScoped<ISupplierContactRepository, SupplierContactRepository>();
 builder.Services.AddScoped<ISupplierContactService, SupplierContactService>();
+
+// ADMIN (SystemConfig & ApprovalRule)
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 
 // ORGANIZATION
@@ -98,6 +107,9 @@ builder.Services.AddScoped<IRequisitionService, RequisitionService>();
 builder.Services.AddScoped<IRfxRepository, RfxRepository>();
 builder.Services.AddScoped<IRfxService, RfxService>();
 
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+
 
 // Module 2: Shipping (Logistics)
 builder.Services.AddScoped<IShippingRepository, ShippingRepository>();
@@ -131,13 +143,95 @@ builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 
+// ==================
+// NEERAJ MODULES
+// ===================
+
+//PurchaseOrder Repository and Service
+builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+
+//ErpExportRef Repository and Service
+builder.Services.AddScoped<IErpExportRefRepository, ErpExportRefRepository>();
+builder.Services.AddScoped<IErpExportRefService, ErpExportRefService>();
+
+//PoLine Repository and Service
+builder.Services.AddScoped<IPoLineRepository, PoLineRepository>();
+builder.Services.AddScoped<IPoLineService, PoLineService>();
+
+//PoAck Repository and Services
+builder.Services.AddScoped<IPoAckRepository, PoAckRepository>();
+builder.Services.AddScoped<IPoAckService, PoAckService>();
+
+// PoRevision Repository and Services
+builder.Services.AddScoped<IPoRevisionRepository, PoRevisionRepository>();
+builder.Services.AddScoped<IPoRevisionService, PoRevisionService>();
+
+// Invoice Repository and Services
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+
+//InvoiceLine Repository and Services
+builder.Services.AddScoped<IInvoiceLineRepository, InvoiceLineRepository>();
+builder.Services.AddScoped<IInvoiceLineService, InvoiceLineService>();
+
+
+// PASSWORD HASHER (REQUIRED)
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+
+// Authentication
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
+
+
+// --------------------
+// CONTROLLERS & API
+// --------------------
+
+builder.Services
+	.AddControllers()
+	.AddJsonOptions(opts =>
+	{
+		opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+	});
+
+
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+	var key = builder.Configuration["Jwt:Key"];
+	var issuer = builder.Configuration["Jwt:Issuer"];
+	var audience = builder.Configuration["Jwt:Audience"];
+
+	options.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuerSigningKey = true,
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
+		ValidateIssuer = true,
+		ValidIssuer = issuer,
+		ValidateAudience = true,
+		ValidAudience = audience,
+		ValidateLifetime = true,
+		ClockSkew = TimeSpan.FromSeconds(30),
+
+		// 👇 Important for [Authorize(Roles = "...")]
+		RoleClaimType = ClaimTypes.Role,
+		NameClaimType = ClaimTypes.NameIdentifier
+	};
+});
+builder.Services.AddAuthorization();
+
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
@@ -145,12 +239,9 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+
 app.Run();
-
-
-
-
-

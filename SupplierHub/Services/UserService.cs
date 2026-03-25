@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using SupplierHub.DTOs.UserDTO;
 using SupplierHub.Models;
 using SupplierHub.Repositories.Interface;
@@ -9,78 +10,91 @@ using SupplierHub.Services.Interface;
 
 namespace SupplierHub.Services
 {
-    public class UserService : IUserService
-    {
-        private readonly IUserRepository _repo;
-        private readonly IMapper _mapper;
+	public class UserService : IUserService
+	{
+		private readonly IUserRepository _repo;
+		private readonly IMapper _mapper;
+		private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(IUserRepository repo, IMapper mapper)
-        {
-            _repo = repo;
-            _mapper = mapper;
-        }
+		public UserService(
+			IUserRepository repo,
+			IMapper mapper,
+			IPasswordHasher<User> passwordHasher)
+		{
+			_repo = repo;
+			_mapper = mapper;
+			_passwordHasher = passwordHasher;
+		}
 
-        public async Task<List<UserDto>> GetAllAsync(bool includeDeleted = false, CancellationToken ct = default)
-        {
-            var users = await _repo.GetAllAsync(includeDeleted, ct);
-            return _mapper.Map<List<UserDto>>(users);
-        }
+		public async Task<List<UserDto>> GetAllAsync(bool includeDeleted = false, CancellationToken ct = default)
+		{
+			var users = await _repo.GetAllAsync(includeDeleted, ct);
+			return _mapper.Map<List<UserDto>>(users);
+		}
 
-        public async Task<UserDto?> GetByIdAsync(long id, CancellationToken ct = default)
-        {
-            var user = await _repo.GetByIdAsync(id, false, ct);
-            if (user == null) return null;
-            return _mapper.Map<UserDto>(user);
-        }
+		public async Task<UserDto?> GetByIdAsync(long id, CancellationToken ct = default)
+		{
+			var user = await _repo.GetByIdAsync(id, false, ct);
+			if (user == null) return null;
+			return _mapper.Map<UserDto>(user);
+		}
 
-        public async Task<UserDto> CreateAsync(CreateUserDto dto, CancellationToken ct = default)
-        {
-            var user = _mapper.Map<User>(dto);
-            // In a real app: hash the plain password into PasswordHash here.
-            user.PasswordHash = dto.Password;
-            user.CreatedOn = System.DateTime.UtcNow;
-            user.UpdatedOn = user.CreatedOn;
-            user.IsDeleted = false;
+		public async Task<UserDto> CreateAsync(CreateUserDto dto, CancellationToken ct = default)
+		{
+			var user = _mapper.Map<User>(dto);
 
-            await _repo.AddAsync(user, ct);
-            await _repo.SaveChangesAsync(ct);
+			// ✅ HASH PASSWORD (CRITICAL FIX)
+			user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
 
-            return _mapper.Map<UserDto>(user);
-        }
+			user.Email = user.Email.ToLowerInvariant();
+			user.CreatedOn = System.DateTime.UtcNow;
+			user.UpdatedOn = user.CreatedOn;
+			user.IsDeleted = false;
 
-        public async Task<UserDto?> UpdateAsync(long id, UpdateUserDto dto, CancellationToken ct = default)
-        {
-            var user = await _repo.GetByIdAsync(id, true, ct);
-            if (user == null) return null;
+			await _repo.AddAsync(user, ct);
+			await _repo.SaveChangesAsync(ct);
 
-            if (dto.OrgID.HasValue) user.OrgID = dto.OrgID.Value;
-            if (!string.IsNullOrWhiteSpace(dto.UserName)) user.UserName = dto.UserName;
-            if (!string.IsNullOrWhiteSpace(dto.Email)) user.Email = dto.Email;
-            if (!string.IsNullOrWhiteSpace(dto.Phone)) user.Phone = dto.Phone;
-            if (!string.IsNullOrWhiteSpace(dto.Password)) user.PasswordHash = dto.Password; // hash in real app
-            if (!string.IsNullOrWhiteSpace(dto.Status)) user.Status = dto.Status;
-            if (dto.IsDeleted.HasValue) user.IsDeleted = dto.IsDeleted.Value;
+			return _mapper.Map<UserDto>(user);
+		}
 
-            user.UpdatedOn = System.DateTime.UtcNow;
+		public async Task<UserDto?> UpdateAsync(long id, UpdateUserDto dto, CancellationToken ct = default)
+		{
+			var user = await _repo.GetByIdAsync(id, true, ct);
+			if (user == null) return null;
 
-            await _repo.UpdateAsync(user, ct);
-            await _repo.SaveChangesAsync(ct);
+			if (dto.OrgID.HasValue) user.OrgID = dto.OrgID.Value;
+			if (!string.IsNullOrWhiteSpace(dto.UserName)) user.UserName = dto.UserName;
+			if (!string.IsNullOrWhiteSpace(dto.Email)) user.Email = dto.Email.ToLowerInvariant();
+			if (!string.IsNullOrWhiteSpace(dto.Phone)) user.Phone = dto.Phone;
 
-            return _mapper.Map<UserDto>(user);
-        }
+			// HASH PASSWORD ON UPDATE
+			if (!string.IsNullOrWhiteSpace(dto.Password))
+			{
+				user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
+			}
 
-        public async Task<bool> SoftDeleteAsync(long id, CancellationToken ct = default)
-        {
-            var ok = await _repo.SoftDeleteAsync(id, ct);
-            if (!ok) return false;
-            await _repo.SaveChangesAsync(ct);
-            return true;
-        }
+			if (!string.IsNullOrWhiteSpace(dto.Status)) user.Status = dto.Status;
+			if (dto.IsDeleted.HasValue) user.IsDeleted = dto.IsDeleted.Value;
 
-        public Task<bool> ExistsAsync(long id, CancellationToken ct = default)
-        {
-            return _repo.ExistsAsync(id, false, ct);
-        }
-    }
+			user.UpdatedOn = System.DateTime.UtcNow;
+
+			await _repo.UpdateAsync(user, ct);
+			await _repo.SaveChangesAsync(ct);
+
+			return _mapper.Map<UserDto>(user);
+		}
+
+		public async Task<bool> SoftDeleteAsync(long id, CancellationToken ct = default)
+		{
+			var ok = await _repo.SoftDeleteAsync(id, ct);
+			if (!ok) return false;
+			await _repo.SaveChangesAsync(ct);
+			return true;
+		}
+
+		public Task<bool> ExistsAsync(long id, CancellationToken ct = default)
+		{
+			return _repo.ExistsAsync(id, false, ct);
+		}
+	}
 }
-

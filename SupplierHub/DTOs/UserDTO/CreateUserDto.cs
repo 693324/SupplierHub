@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace SupplierHub.DTOs.UserDTO
 {
@@ -13,7 +14,7 @@ namespace SupplierHub.DTOs.UserDTO
 		public string UserName { get; set; } = default!;
 
 		[Required, MaxLength(150), EmailAddress]
-		public string Email { get; set; } = default!;
+		public string? Email { get; set; }
 
 		[MaxLength(30), Phone]
 		public string? Phone { get; set; }
@@ -29,5 +30,6 @@ namespace SupplierHub.DTOs.UserDTO
 		/// </summary>
 		[Required, MaxLength(30)]
 		public string Status { get; set; } = "Active";
+
 	}
 }
