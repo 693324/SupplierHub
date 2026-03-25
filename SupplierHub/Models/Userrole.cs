@@ -1,35 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
 namespace SupplierHub.Models
 {
 	public class UserRole
 	{
-		[Required]
+		// ✅ Composite key columns
 		public long UserID { get; set; }
-
-		[Required]
 		public long RoleID { get; set; }
 
-		[Required, MaxLength(30)]
-		public required string Status { get; set; }
-
-		[Required]
+		public string Status { get; set; } = null!;
 		public DateTime CreatedOn { get; set; }
-
-		[Required]
 		public DateTime UpdatedOn { get; set; }
-
-		[Required]
 		public bool IsDeleted { get; set; }
 
-
-		// Navigation to User
-		[ForeignKey(nameof(UserID))]
+		// ✅ Navigation properties (REQUIRED)
 		public User User { get; set; } = null!;
-
-		// Navigation to Role
-		[ForeignKey(nameof(RoleID))]
 		public Role Role { get; set; } = null!;
 	}
 }
