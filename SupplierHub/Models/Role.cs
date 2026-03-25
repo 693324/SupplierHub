@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SupplierHub.Models
@@ -9,21 +10,16 @@ namespace SupplierHub.Models
 		public long RoleID { get; set; }
 
 		[Required, MaxLength(100)]
-		public required string RoleName { get; set; }
+		public string RoleName { get; set; } = null!;
 
 		[Required, MaxLength(30)]
-		public required string Status { get; set; }
+		public string Status { get; set; } = null!;
 
-		[Required]
 		public DateTime CreatedOn { get; set; }
-
-		[Required]
 		public DateTime UpdatedOn { get; set; }
-
-		[Required]
 		public bool IsDeleted { get; set; }
 
-
-		//public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+		// ✅ Navigation
+		public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 	}
 }

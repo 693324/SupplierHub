@@ -169,42 +169,46 @@ namespace SupplierHub.Config.Configurations
 	// USER–ROLE (JOIN TABLE) ✅ FINAL, CORRECT
 	// =========================================================
 	public class UserroleConfiguration : IEntityTypeConfiguration<UserRole>
-	{
-		public void Configure(EntityTypeBuilder<UserRole> builder)
 		{
-			builder.ToTable("UserRoles");
+			public void Configure(EntityTypeBuilder<UserRole> builder)
+			{
+				// ✅ Composite Primary Key
+				builder.HasKey(ur => new { ur.UserID, ur.RoleID });
 
-			// Composite Primary Key
-			builder.HasKey(ur => new { ur.UserID, ur.RoleID });
+				// ✅ Properties
+				builder.Property(ur => ur.Status)
+					   .HasMaxLength(30)
+					   .IsRequired()
+					   .HasDefaultValue("ACTIVE");
 
-			builder.Property(ur => ur.Status)
-				   .HasMaxLength(30)
-				   .HasDefaultValue("ACTIVE");
+				builder.Property(ur => ur.CreatedOn)
+					   .HasDefaultValueSql("CURRENT_TIMESTAMP")
+					   .IsRequired();
 
-			builder.Property(ur => ur.CreatedOn)
-				   .HasDefaultValueSql("CURRENT_TIMESTAMP");
+				builder.Property(ur => ur.UpdatedOn)
+					   .HasDefaultValueSql("CURRENT_TIMESTAMP")
+					   .ValueGeneratedOnAddOrUpdate()
+					   .IsRequired();
 
-			builder.Property(ur => ur.UpdatedOn)
-				   .HasDefaultValueSql("CURRENT_TIMESTAMP")
-				   .ValueGeneratedOnAddOrUpdate();
+				builder.Property(ur => ur.IsDeleted)
+					   .HasDefaultValue(false)
+					   .IsRequired();
 
-			builder.Property(ur => ur.IsDeleted)
-				   .HasDefaultValue(false);
+				// ✅ Relationship → User
+				builder.HasOne(ur => ur.User)
+					   .WithMany(u => u.UserRoles)
+					   .HasForeignKey(ur => ur.UserID)
+					   .OnDelete(DeleteBehavior.Restrict);
 
-			// IMPORTANT:
-			// User and Role DO NOT have UserRoles navigation properties
-			// So we use WithMany() WITHOUT lambda
-			builder.HasOne(ur => ur.User)
-				   .WithMany()
-				   .HasForeignKey(ur => ur.UserID)
-				   .OnDelete(DeleteBehavior.Restrict);
+				// ✅ Relationship → Role
+				builder.HasOne(ur => ur.Role)
+					   .WithMany(r => r.UserRoles)
+					   .HasForeignKey(ur => ur.RoleID)
+					   .OnDelete(DeleteBehavior.Restrict);
 
-			builder.HasOne(ur => ur.Role)
-				   .WithMany()
-				   .HasForeignKey(ur => ur.RoleID)
-				   .OnDelete(DeleteBehavior.Restrict);
+				builder.ToTable("UserRoles");
+			}
 		}
-	}
 
 	// =========================================================
 	// AUDIT LOG CONFIGURATION

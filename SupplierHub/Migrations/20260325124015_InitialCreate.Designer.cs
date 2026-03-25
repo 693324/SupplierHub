@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SupplierHub;
 
@@ -11,9 +12,11 @@ using SupplierHub;
 namespace SupplierHub.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325124015_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,7 +286,7 @@ namespace SupplierHub.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.Award", b =>
@@ -1435,7 +1438,7 @@ namespace SupplierHub.Migrations
 
                     b.HasKey("PermissionID");
 
-                    b.ToTable("Permissions", (string)null);
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.PoAck", b =>
@@ -2022,7 +2025,7 @@ namespace SupplierHub.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.RolePermission", b =>
@@ -2059,7 +2062,7 @@ namespace SupplierHub.Migrations
 
                     b.HasIndex("PermissionID");
 
-                    b.ToTable("Rolepermissions", (string)null);
+                    b.ToTable("Rolepermissions");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.Scorecard", b =>
@@ -2526,7 +2529,7 @@ namespace SupplierHub.Migrations
 
                     b.HasIndex("OrgID");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SupplierHub.Models.UserRole", b =>
@@ -2546,9 +2549,6 @@ namespace SupplierHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
-
-                    b.Property<long>("RoleID1")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Status")
                         .IsRequired()
