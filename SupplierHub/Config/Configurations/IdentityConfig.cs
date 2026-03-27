@@ -125,6 +125,8 @@ namespace SupplierHub.Config.Configurations
 			builder.ToTable("Users");
 
 			builder.HasKey(x => x.UserID);
+			builder.HasIndex(u => u.Email)
+				   .IsUnique();
 			builder.Property(x => x.UserID)
 				   .ValueGeneratedOnAdd();
 
